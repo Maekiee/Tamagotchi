@@ -50,6 +50,16 @@ class SetTamagotchViewController: UIViewController {
             cell.configCell(item: value)
         }.disposed(by: disposeBag)
         
+        collectionView.rx.modelSelected((String, String).self)
+            .bind(with: self) { owner, value in
+                let vc = TamagotchiPopupViewController()
+                vc.modalPresentationStyle = .overCurrentContext
+                vc.modalTransitionStyle = .crossDissolve
+                owner.present(vc, animated: true)
+                print(owner, value)
+                
+            }.disposed(by: disposeBag)
+        
     }
     
 }
