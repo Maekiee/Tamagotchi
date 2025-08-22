@@ -13,8 +13,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window = UIWindow(windowScene: scene)
         window?.rootViewController = MainTabBarViewController()
         
-        let SetTamagotchiNav = UINavigationController(rootViewController: SetTamagotchViewController())
-        window?.rootViewController = SetTamagotchiNav
+//        let SetTamagotchiNav = UINavigationController(rootViewController: SetTamagotchViewController())
+//        window?.rootViewController = SetTamagotchiNav
         window?.makeKeyAndVisible()
         
     }
