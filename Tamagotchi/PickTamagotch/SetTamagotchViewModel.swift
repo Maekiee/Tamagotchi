@@ -3,7 +3,7 @@ import RxSwift
 import RxCocoa
 
 
-class PickTamagotchViewModel {
+class SetTamagotchViewModel {
     let disposeBag = DisposeBag()
     
     struct Input {

@@ -2,7 +2,7 @@ import UIKit
 import RxSwift
 import RxCocoa
 
-class PickTamagotchViewController: UIViewController {
+class SetTamagotchViewController: UIViewController {
     let disposeBag = DisposeBag()
 
     override func viewDidLoad() {
@@ -16,7 +16,7 @@ class PickTamagotchViewController: UIViewController {
     
 }
 
-extension PickTamagotchViewController {
+extension SetTamagotchViewController {
     
     private func configHeiracy() {
         
@@ -28,6 +28,7 @@ extension PickTamagotchViewController {
     
     private func configView() {
         view.backgroundColor = .white
+        navigationItem.title = "다마고치 선택하기"
     }
     
     
