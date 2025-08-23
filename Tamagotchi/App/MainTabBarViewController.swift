@@ -9,7 +9,7 @@ class MainTabBarViewController: UITabBarController {
     }
     
     func createTabBarController() {
-        let tamagotchiTabVC = UIViewController()
+        let tamagotchiTabVC = TamagotchiTabViewController()
         let secondTabVc = UIViewController()
         let settingTabVc = UIViewController()
         
