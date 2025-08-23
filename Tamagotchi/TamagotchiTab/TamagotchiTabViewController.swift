@@ -136,6 +136,8 @@ final class TamagotchiTabViewController: UIViewController {
         output.levelCount
             .bind(with: self) { owner, count in
                 owner.levelLabel.text = "Lv\(count) · "
+                let tamagotchi: Int = count > 9 ? 9 : count
+                owner.tamagotchiImage.image = UIImage(named: "1-\(tamagotchi)")
             }.disposed(by: disposeBag)
         
         output.feedCount
