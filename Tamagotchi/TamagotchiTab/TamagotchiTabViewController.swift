@@ -1,34 +1,35 @@
 import UIKit
 import SnapKit
+import RxSwift
+import RxCocoa
 
-
-class TamagotchiTabViewController: UIViewController {
-    let bubbleTalk: UIImageView = {
+final class TamagotchiTabViewController: UIViewController {
+    private let bubbleTalk: UIImageView = {
         let view = UIImageView()
         view.image = UIImage(named: "bubble")
 //        view.backgroundColor = .green
         return view
     }()
-    let bubbleTalkLable: UILabel = {
+    private let bubbleTalkLable: UILabel = {
         let label = UILabel()
         label.text = "다다음주가 시험이에요 "
         label.textAlignment = .center
         label.numberOfLines = 0
         return label
     }()
-    let tamagotchiImage: UIImageView = {
+    private let tamagotchiImage: UIImageView = {
         let view = UIImageView()
-        view.image = UIImage(named: "1-6")
+        view.image = UIImage(named: "1-1")
         return view
     }()
-    let nameContainer: UIView = {
+    private let nameContainer: UIView = {
         let view = UIView()
         view.backgroundColor = .clear
         view.layer.borderWidth = 1
         view.layer.cornerRadius = 4
         return view
     }()
-    let nameLabel: UILabel = {
+    private let nameLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .center
         label.textColor = .black
@@ -36,23 +37,23 @@ class TamagotchiTabViewController: UIViewController {
         label.font = .systemFont(ofSize: 16)
         return label
     }()
-    let levelLabel: UILabel = {
+    private let levelLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .center
         label.textColor = .black
-        label.text = "Lv11 · "
+        label.text = "Lv0 · "
         label.font = .systemFont(ofSize: 16)
         return label
     }()
-    let riceLabel: UILabel = {
+    private let riceLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .center
         label.textColor = .black
-        label.text = "밥알 0개 · "
+        label.text = "밥알 0개 ·  "
         label.font = .systemFont(ofSize: 16)
         return label
     }()
-    let waterLabel: UILabel = {
+    private let waterLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .center
         label.textColor = .black
@@ -60,7 +61,7 @@ class TamagotchiTabViewController: UIViewController {
         label.font = .systemFont(ofSize: 16)
         return label
     }()
-    lazy var stackView: UIStackView = {
+    private lazy var stackView: UIStackView = {
         let view = UIStackView()
         view.axis = .horizontal
         [levelLabel, riceLabel, waterLabel].forEach {
@@ -68,28 +69,28 @@ class TamagotchiTabViewController: UIViewController {
         }
         return view
     }()
-    let feedTextField: UITextField = {
+    private let feedTextField: UITextField = {
         let tf = UITextField()
         tf.placeholder = "밥주세요"
 //        tf.backgroundColor = .green
         return tf
     }()
-    let divder1: UIView = {
+    private let divder1: UIView = {
         let view = UIView()
         view.backgroundColor = .gray
         return view
     }()
-    let waterTextField: UITextField = {
+    private let waterTextField: UITextField = {
         let tf = UITextField()
         tf.placeholder = "물주세요"
         return tf
     }()
-    let divder2: UIView = {
+    private let divder2: UIView = {
         let view = UIView()
         view.backgroundColor = .gray
         return view
     }()
-    let feedbutton: UIButton = {
+    private let feedbutton: UIButton = {
         let button = UIButton()
         button.setTitle("밥먹기", for: .normal)
         button.setTitleColor(.black, for: .normal)
@@ -99,7 +100,7 @@ class TamagotchiTabViewController: UIViewController {
         button.contentEdgeInsets = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
         return button
     }()
-    let waterbutton: UIButton = {
+    private let waterbutton: UIButton = {
         let button = UIButton()
         button.setTitle("물먹기", for: .normal)
         button.setTitleColor(.black, for: .normal)
@@ -110,12 +111,43 @@ class TamagotchiTabViewController: UIViewController {
         return button
     }()
     
+    private let viewModel = TamagotchiTabViewModel()
+    private let disposeBag = DisposeBag()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         configHeiracy()
         configLayout()
         configView()
+        
+        bind()
     }
+    
+    private func bind() {
+        let input = TamagotchiTabViewModel.Input(
+            feedButtonTap: feedbutton.rx.tap,
+            feedTextfieldText: feedTextField.rx.text.orEmpty
+        )
+        
+        let output = viewModel.transform(input: input)
+        
+        output.levelCount
+            .bind(with: self) { owner, count in
+                owner.levelLabel.text = "Lv\(count) · "
+            }.disposed(by: disposeBag)
+        
+        output.feedCount
+            .bind(with: self) { owner, count in
+                owner.riceLabel.text = "밥알 \(count)개 · "
+            }.disposed(by: disposeBag)
+        
+        output.waterCount
+            .bind(with: self) { owner, count in
+                owner.waterLabel.text = "물방울 \(count)개"
+            }.disposed(by: disposeBag)
+    }
+    
+    
     
 }
 
