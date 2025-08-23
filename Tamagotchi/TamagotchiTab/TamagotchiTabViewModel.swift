@@ -54,6 +54,36 @@ class TamagotchiTabViewModel {
             }
             .disposed(by: disposeBag)
         
+        Observable.combineLatest(feedCount, waterCount)
+            .map { food, water in
+                return (food / 5) + (water / 2)
+            }.bind(with: self) { owner, value in
+                if value < 20 {
+                    levelCount.accept(1)
+                } else if value >= 20 && value < 30 {
+                    levelCount.accept(2)
+                } else if value >= 30 && value < 40 {
+                    levelCount.accept(3)
+                } else if value >= 40 && value < 50 {
+                    levelCount.accept(4)
+                } else if value >= 50 && value < 60 {
+                    levelCount.accept(5)
+                } else if value >= 60 && value < 70 {
+                    levelCount.accept(6)
+                } else if value >= 70 && value < 80 {
+                    levelCount.accept(7)
+                } else if value >= 80 && value < 90 {
+                    levelCount.accept(8)
+                } else if value >= 90 && value < 100 {
+                    levelCount.accept(9)
+                } else if value >= 100 {
+                    levelCount.accept(10)
+                } else {
+                    print("마이너스가 들어오나?")
+                }
+            }.disposed(by: disposeBag)
+
+        
          
         
         return Output(
