@@ -82,7 +82,6 @@ class TamagotchiTabViewController: UIViewController {
     let waterTextField: UITextField = {
         let tf = UITextField()
         tf.placeholder = "물주세요"
-//        tf.backgroundColor = .green
         return tf
     }()
     let divder2: UIView = {
@@ -93,15 +92,21 @@ class TamagotchiTabViewController: UIViewController {
     let feedbutton: UIButton = {
         let button = UIButton()
         button.setTitle("밥먹기", for: .normal)
+        button.setTitleColor(.black, for: .normal)
         button.setImage(UIImage(systemName: "drop.circle"), for: .normal)
         button.layer.cornerRadius = 8
+        button.layer.borderWidth = 1
+        button.contentEdgeInsets = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
         return button
     }()
     let waterbutton: UIButton = {
         let button = UIButton()
         button.setTitle("물먹기", for: .normal)
+        button.setTitleColor(.black, for: .normal)
         button.setImage(UIImage(systemName: "leaf.circle"), for: .normal)
         button.layer.cornerRadius = 8
+        button.layer.borderWidth = 1
+        button.contentEdgeInsets = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
         return button
     }()
     
@@ -164,7 +169,7 @@ extension TamagotchiTabViewController {
         // 밥 텍스트필드
         feedTextField.snp.makeConstraints { make in
             make.top.equalTo(stackView.snp.bottom).offset(20)
-            make.centerX.equalToSuperview().offset(-20)
+            make.centerX.equalToSuperview().offset(-28)
             make.width.equalTo(150)
             make.height.equalTo(40)
         }
@@ -173,23 +178,25 @@ extension TamagotchiTabViewController {
             make.top.equalTo(feedTextField.snp.bottom)
             make.height.equalTo(1)
             make.width.equalTo(feedTextField.snp.width)
-            make.centerX.equalToSuperview().offset(-20)
+            make.centerX.equalToSuperview().offset(-28)
         }
         
         feedbutton.snp.makeConstraints { make in
             make.top.equalTo(stackView.snp.bottom).offset(20)
+            make.height.equalTo(40)
             make.leading.equalTo(feedTextField.snp.trailing).offset(4)
         }
         // 물 텍스트필드
         waterTextField.snp.makeConstraints { make in
             make.top.equalTo(divder1.snp.bottom).offset(20)
-            make.centerX.equalToSuperview().offset(-20)
+            make.centerX.equalToSuperview().offset(-28)
             make.width.equalTo(150)
             make.height.equalTo(40)
         }
         
         waterbutton.snp.makeConstraints { make in
             make.top.equalTo(divder1.snp.bottom).offset(20)
+            make.height.equalTo(40)
             make.leading.equalTo(waterTextField.snp.trailing).offset(4)
         }
         
@@ -197,7 +204,7 @@ extension TamagotchiTabViewController {
             make.top.equalTo(waterTextField.snp.bottom)
             make.height.equalTo(1)
             make.width.equalTo(waterTextField.snp.width)
-            make.centerX.equalToSuperview().offset(-20)
+            make.centerX.equalToSuperview().offset(-28)
         }
         
         
