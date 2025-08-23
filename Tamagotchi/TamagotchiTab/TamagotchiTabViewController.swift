@@ -255,7 +255,11 @@ extension TamagotchiTabViewController {
     private func configView() {
         view.backgroundColor = .white
         navigationItem.title = "땡땡댕의 다마고치"
-        navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "person.cicle"), style: .done, target: self, action: #selector(testActionTapped))
+        navigationItem.rightBarButtonItem = UIBarButtonItem(
+            image: UIImage(systemName: "person.circle"),
+            style: .plain,
+            target: self,
+            action: #selector(testActionTapped))
     }
     
 }

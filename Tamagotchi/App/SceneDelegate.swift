@@ -11,7 +11,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let scene = (scene as? UIWindowScene) else { return }
         
         window = UIWindow(windowScene: scene)
-        window?.rootViewController = MainTabBarViewController()
+//        window?.rootViewController = MainTabBarViewController()
+        window?.rootViewController = UINavigationController(rootViewController: TamagotchiTabViewController())
         
 //        let SetTamagotchiNav = UINavigationController(rootViewController: SetTamagotchViewController())
 //        window?.rootViewController = SetTamagotchiNav
