@@ -126,7 +126,9 @@ final class TamagotchiTabViewController: UIViewController {
     private func bind() {
         let input = TamagotchiTabViewModel.Input(
             feedButtonTap: feedbutton.rx.tap,
-            feedTextfieldText: feedTextField.rx.text.orEmpty
+            feedTextfieldText: feedTextField.rx.text.orEmpty,
+            waterButtnTap: waterbutton.rx.tap,
+            waterTextfieldText: waterTextField.rx.text.orEmpty
         )
         
         let output = viewModel.transform(input: input)

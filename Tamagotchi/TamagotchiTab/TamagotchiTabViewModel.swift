@@ -9,6 +9,9 @@ class TamagotchiTabViewModel {
     struct Input {
         let feedButtonTap: ControlEvent<Void>
         let feedTextfieldText: ControlProperty<String>
+        
+        let waterButtnTap: ControlEvent<Void>
+        let waterTextfieldText: ControlProperty<String>
     }
     
     struct Output {
@@ -32,14 +35,22 @@ class TamagotchiTabViewModel {
             .withLatestFrom(input.feedTextfieldText)
             .map { self.validateCount(value: $0) }
             .scan(0) { oldValue, newValue in
-                if newValue < 100 {
-                    return oldValue + newValue
-                } else {
-                    return oldValue
-                }
+                return newValue < 100 ? oldValue + newValue : oldValue
             }
             .bind(with: self) { owner, value in
                 feedCount.accept(value)
+            }
+            .disposed(by: disposeBag)
+        
+        
+        input.waterButtnTap
+            .withLatestFrom(input.waterTextfieldText)
+            .map { self.validateCount(value: $0) }
+            .scan(0) { oldValue, newValue in
+                return newValue < 50 ? oldValue + newValue : oldValue
+            }
+            .bind(with: self) { owner, value in
+                waterCount.accept(value)
             }
             .disposed(by: disposeBag)
         
@@ -61,7 +72,7 @@ class TamagotchiTabViewModel {
         }
     }
     
-    private func counting() {
+    private func levelUP() {
         
     }
 }
