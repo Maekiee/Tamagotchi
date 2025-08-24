@@ -153,6 +153,10 @@ final class TamagotchiTabViewController: UIViewController {
         
         navigationItem.rightBarButtonItem?.rx.tap
             .bind(with: self) { owner, value in
+                // 초기화 로직
+//                guard let domain = Bundle.main.bundleIdentifier else { return }
+//                UserDefaults.standard.removePersistentDomain(forName: domain)
+                
                 let vc = SettingViewController()
                 owner.navigationController?.pushViewController(vc, animated: true)
             }.disposed(by: disposeBag)

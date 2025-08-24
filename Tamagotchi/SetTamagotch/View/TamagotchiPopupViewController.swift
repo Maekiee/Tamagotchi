@@ -29,7 +29,6 @@ final class TamagotchiPopupViewController: UIViewController {
     let nameLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .center
-        label.text = "hello world"
         label.textColor = .black
         label.font = .systemFont(ofSize: 13)
         return label
@@ -41,7 +40,7 @@ final class TamagotchiPopupViewController: UIViewController {
     }()
     private let messageLabel: UILabel = {
         let label = UILabel()
-        label.text = "이것은 커스텀 팝업 메시지입니다. 원하는 UI를 자유롭게 구성할 수 있습니다."
+        label.text = "저는 방실방실 다마고치 입니다. 키는 100Km 몸무게는 150톤 이에용 성격은 화끈하고 날라다닙니다. 열심히 잘 먹고 잘 클 자신은 있답니다."
         label.font = .systemFont(ofSize: 16)
         label.textAlignment = .center
         label.numberOfLines = 0
@@ -76,7 +75,7 @@ final class TamagotchiPopupViewController: UIViewController {
     }()
     
     private let disposeBag = DisposeBag()
-    var imageName = ""
+    var selectedItemIamge = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -85,9 +84,7 @@ final class TamagotchiPopupViewController: UIViewController {
         configLayout()
         bind()
         
-        tamagotchiImage.image = UIImage(named: imageName)
-        
-        
+        tamagotchiImage.image = UIImage(named: selectedItemIamge)
         
     }
     
@@ -96,6 +93,18 @@ final class TamagotchiPopupViewController: UIViewController {
         closeButton.rx.tap
             .bind(with: self) { owner, value in
                 owner.dismiss(animated: true)
+            }.disposed(by: disposeBag)
+        
+        startButton.rx.tap
+            .bind(with: self) { owner, value in
+                UserDefaults.standard.set(true, forKey: "isLogin")
+                guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+                      let sceneDelegate = windowScene.delegate as? SceneDelegate else {
+                    return
+                }
+                let vc = TamagotchiTabViewController()
+                sceneDelegate.changeRootView(vc)
+                
             }.disposed(by: disposeBag)
     }
     

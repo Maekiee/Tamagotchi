@@ -12,11 +12,24 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         window = UIWindow(windowScene: scene)
         
-//        window?.rootViewController = UINavigationController(rootViewController: TamagotchiTabViewController())
-        window?.rootViewController = UINavigationController(rootViewController: SetTamagotchViewController())
+        let isLogin = UserDefaults.standard.bool(forKey: "isLogin")
+        
+        window?.rootViewController = UINavigationController(rootViewController: isLogin ? TamagotchiTabViewController() : SetTamagotchViewController())
+        
         window?.makeKeyAndVisible()
         
     }
+    
+    func changeRootView(_ vc: UIViewController) {
+        guard let window = self.window else { return }
+        window.rootViewController = UINavigationController(rootViewController: vc)
+        
+        UIView.transition(with: window,
+                          duration: 0.2,
+                          options: [.transitionCrossDissolve],
+                          animations: nil,
+                          completion: nil)
+      }
 
     func sceneDidDisconnect(_ scene: UIScene) {
         
