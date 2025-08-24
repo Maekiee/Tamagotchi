@@ -34,7 +34,7 @@ final class TamagotchiTabViewController: UIViewController {
         label.textAlignment = .center
         label.textColor = .black
         label.text = "더미 다마고치"
-        label.font = .systemFont(ofSize: 16)
+        label.font = .systemFont(ofSize: 13)
         return label
     }()
     private let levelLabel: UILabel = {
@@ -111,7 +111,7 @@ final class TamagotchiTabViewController: UIViewController {
         return button
     }()
     
-    private let viewModel = TamagotchiTabViewModel()
+    let viewModel = TamagotchiTabViewModel()
     private let disposeBag = DisposeBag()
     
     override func viewDidLoad() {
@@ -119,11 +119,16 @@ final class TamagotchiTabViewController: UIViewController {
         configHeiracy()
         configLayout()
         configView()
-//        let tamagotchi = Tamagotchi.dummyData.compactMap {
-//            return UserDefaults.standard.object(forKey: $0.1)
-//        }
-//            .filter { $0 != nil }
+
         bind()
+    }
+    
+    override func viewIsAppearing(_ animated: Bool) {
+        super.viewIsAppearing(animated)
+        viewModel.changeImage()
+        let talk = Tamagotchi.talk.randomElement()!
+        self.bubbleTalkLable.text = talk
+        print(#function)
     }
     
     private func bind() {
@@ -137,12 +142,23 @@ final class TamagotchiTabViewController: UIViewController {
         let output = viewModel.transform(input: input)
         
         
-        print(output.tamagotchiImage.value)
+        output.talkLable
+            .bind(to: bubbleTalkLable.rx.text)
+            .disposed(by: disposeBag)
+        
+        viewModel.tamagotchiImage
+            .bind(with: self) { owner, value in
+                let count = output.levelCount.value > 9 ? 9 : output.levelCount.value
+                print("카운트", count)
+                owner.nameLabel.text = Tamagotchi.dummyData[value - 1].1
+                owner.tamagotchiImage.image = UIImage(named: "\(value)-\(count)")
+            }.disposed(by: disposeBag)
+        
         output.levelCount
             .bind(with: self) { owner, count in
                 owner.levelLabel.text = "Lv\(count) · "
                 let tamagotchi: Int = count > 9 ? 9 : count
-                owner.tamagotchiImage.image = UIImage(named: "\(output.tamagotchiImage.value)-\(tamagotchi)")
+                owner.tamagotchiImage.image = UIImage(named: "\(owner.viewModel.tamagotchiImage.value)-\(tamagotchi)")
             }.disposed(by: disposeBag)
         
         output.feedCount
@@ -158,10 +174,6 @@ final class TamagotchiTabViewController: UIViewController {
         
         navigationItem.rightBarButtonItem?.rx.tap
             .bind(with: self) { owner, value in
-                // 초기화 로직
-//                guard let domain = Bundle.main.bundleIdentifier else { return }
-//                UserDefaults.standard.removePersistentDomain(forName: domain)
-                
                 let vc = SettingViewController()
                 owner.navigationController?.pushViewController(vc, animated: true)
             }.disposed(by: disposeBag)
@@ -270,7 +282,7 @@ extension TamagotchiTabViewController {
     
     private func configView() {
         view.backgroundColor = .white
-        navigationItem.title = "땡땡댕의 다마고치"
+        navigationItem.title = "대장님의 다마고치"
         navigationItem.rightBarButtonItem = UIBarButtonItem(
             image: UIImage(systemName: "person.circle"),
             style: .plain,

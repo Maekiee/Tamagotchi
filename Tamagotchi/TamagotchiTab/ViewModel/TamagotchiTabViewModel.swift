@@ -9,7 +9,6 @@ class TamagotchiTabViewModel {
     struct Input {
         let feedButtonTap: ControlEvent<Void>
         let feedTextfieldText: ControlProperty<String>
-        
         let waterButtnTap: ControlEvent<Void>
         let waterTextfieldText: ControlProperty<String>
     }
@@ -18,18 +17,35 @@ class TamagotchiTabViewModel {
         let levelCount: BehaviorRelay<Int>
         let feedCount: BehaviorRelay<Int>
         let waterCount: BehaviorRelay<Int>
-        let tamagotchiImage: BehaviorRelay<Int>
+        let talkLable: BehaviorRelay<String>
+//        let tamagotchiImage: BehaviorRelay<Int>
     }
     
     init() { }
-
+    
+    let tamagotchiImage: BehaviorRelay<Int> = BehaviorRelay<Int>(value: 2)
+    
+    func changeImage() {
+        let tamagotchi = Tamagotchi.dummyData.compactMap {
+            return UserDefaults.standard.object(forKey: $0.1) as? Int
+        }
+        
+        if let tamagotchi = tamagotchi.first {
+            tamagotchiImage.accept(tamagotchi)
+        }
+    }
+    
+    func speakingTamagotchi() {
+        
+    }
     
     func transform(input: Input) -> Output {
         
         let levelCount = BehaviorRelay<Int>(value: 1)
         let feedCount = BehaviorRelay<Int>(value: 0)
         let waterCount = BehaviorRelay<Int>(value: 0)
-        let tamagotchiImage = BehaviorRelay<Int>(value: 1)
+        let talkLabel = BehaviorRelay<String>(value: "안녕하세요 대장님 만나서 반갑습니다.")
+//        let tamagotchiImage = BehaviorRelay<Int>(value: 1)
         
         
 
@@ -40,7 +56,9 @@ class TamagotchiTabViewModel {
                 return newValue < 100 ? oldValue + newValue : oldValue
             }
             .bind(with: self) { owner, value in
+                let randomTalk = Tamagotchi.talk.randomElement()!
                 feedCount.accept(value)
+                talkLabel.accept(randomTalk)
             }
             .disposed(by: disposeBag)
         
@@ -52,6 +70,8 @@ class TamagotchiTabViewModel {
                 return newValue < 50 ? oldValue + newValue : oldValue
             }
             .bind(with: self) { owner, value in
+                let randomTalk = Tamagotchi.talk.randomElement()!
+                talkLabel.accept(randomTalk)
                 waterCount.accept(value)
             }
             .disposed(by: disposeBag)
@@ -84,21 +104,13 @@ class TamagotchiTabViewModel {
                     print("마이너스가 들어오나?")
                 }
             }.disposed(by: disposeBag)
-
-        
-        let tamagotchi = Tamagotchi.dummyData.compactMap {
-            return UserDefaults.standard.object(forKey: $0.1) as? Int
-        }
-        
-        if let tamagotchi = tamagotchi.first {
-            tamagotchiImage.accept(tamagotchi)
-        }
         
         return Output(
             levelCount: levelCount,
             feedCount: feedCount,
             waterCount: waterCount,
-            tamagotchiImage: tamagotchiImage,
+            talkLable: talkLabel
+//            tamagotchiImage: tamagotchiImage,
         )
     }
     
