@@ -1,8 +1,10 @@
 import UIKit
 import SnapKit
+import RxSwift
+import RxCocoa
 
 
-class TamagotchiPopupViewController: UIViewController {
+final class TamagotchiPopupViewController: UIViewController {
     private let popupView: UIView = {
         let view = UIView()
         view.backgroundColor = .white
@@ -73,13 +75,28 @@ class TamagotchiPopupViewController: UIViewController {
         return button
     }()
     
+    private let disposeBag = DisposeBag()
+    var imageName = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         configUI()
         configLayout()
+        bind()
         
+        tamagotchiImage.image = UIImage(named: imageName)
+        
+        
+        
+    }
+    
+    private func bind() {
+        
+        closeButton.rx.tap
+            .bind(with: self) { owner, value in
+                owner.dismiss(animated: true)
+            }.disposed(by: disposeBag)
     }
     
     private func configUI() {

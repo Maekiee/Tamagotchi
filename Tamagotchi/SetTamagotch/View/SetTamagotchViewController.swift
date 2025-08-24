@@ -3,11 +3,11 @@ import RxSwift
 import RxCocoa
 import SnapKit
 
-class SetTamagotchViewController: UIViewController {
-    let disposeBag = DisposeBag()
-    let viewModel = SetTamagotchViewModel()
+final class SetTamagotchViewController: UIViewController {
+    private let disposeBag = DisposeBag()
+    private let viewModel = SetTamagotchViewModel()
     
-    lazy var collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout())
+    private lazy var collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout())
     
     var array = [String](repeating: "-6", count: 20)
     let dummyData = [
@@ -32,7 +32,7 @@ class SetTamagotchViewController: UIViewController {
         ("noImage", "준비중이에요"),
         ("noImage", "준비중이에요"),
     ]
-    lazy var tamagotchiList = BehaviorSubject<[(String, String)]>(value: dummyData)
+    private lazy var tamagotchiList = BehaviorSubject<[(String, String)]>(value: dummyData)
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -44,7 +44,7 @@ class SetTamagotchViewController: UIViewController {
         
     }
     
-    func bind() {
+    private func bind() {
         
         tamagotchiList.bind(to: collectionView.rx.items(cellIdentifier: SetTamagotchiCollectionViewCell.identifier, cellType: SetTamagotchiCollectionViewCell.self)) { item, value, cell in
             cell.configCell(item: value)
@@ -55,6 +55,8 @@ class SetTamagotchViewController: UIViewController {
                 let vc = TamagotchiPopupViewController()
                 vc.modalPresentationStyle = .overCurrentContext
                 vc.modalTransitionStyle = .crossDissolve
+                vc.nameLabel.text = value.1
+                vc.imageName = value.0
                 owner.present(vc, animated: true)
                 print(owner, value)
                 

@@ -23,12 +23,7 @@ class SetUserNameViewController: UIViewController {
         configAddView()
         configLayout()
         configView()
-        
     }
-    
-
-    
-
 }
 
 extension SetUserNameViewController: configurationUI {
