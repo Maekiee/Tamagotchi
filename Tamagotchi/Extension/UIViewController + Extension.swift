@@ -9,10 +9,13 @@ extension UIViewController {
         present(alertController, animated: true, completion: nil)
     }
     
-    func showAlertType2(title: String, message: String, ) {
+    func showAlertType2(title: String, message: String, completed: @escaping (() -> Void) ) {
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
         let alertActionNo = UIAlertAction(title: "취소", style: .default, handler: nil)
-        let alertActionYes = UIAlertAction(title: "확인", style: .default, handler: nil)
+        let alertActionYes = UIAlertAction(title: "확인", style: .default) { [weak self]_ in
+            guard let self = self else { return }
+            completed()
+        }
         alertController.addAction(alertActionNo)
         alertController.addAction(alertActionYes)
         present(alertController, animated: true, completion: nil)

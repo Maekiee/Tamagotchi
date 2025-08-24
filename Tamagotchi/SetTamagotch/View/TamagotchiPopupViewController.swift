@@ -66,7 +66,7 @@ final class TamagotchiPopupViewController: UIViewController {
     }()
     private let startButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setTitle("시작하기", for: .normal)
+        button.setTitle("", for: .normal)
         button.setTitleColor(.black, for: .normal)
         button.titleLabel?.font = .systemFont(ofSize: 17, weight: .semibold)
         button.layer.borderColor = UIColor.lightGray.cgColor
@@ -75,36 +75,65 @@ final class TamagotchiPopupViewController: UIViewController {
     }()
     
     private let disposeBag = DisposeBag()
-    var selectedItemIamge = ""
+    private let viewModel = TamagotchiPopupViewModel()
+
+    private let isChange: Bool = UserDefaults.standard.bool(forKey: "isLogin")
+    var row:Int?
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         configUI()
         configLayout()
+        
         bind()
         
-        tamagotchiImage.image = UIImage(named: selectedItemIamge)
-        
+        if let row = row {
+            let item = Tamagotchi.dummyData[row]
+            tamagotchiImage.image = UIImage(named: item.0)
+            nameLabel.text = item.1
+        }
+        startButton.setTitle( isChange ? "변경하기" : "시작하기", for: .normal)
     }
     
     private func bind() {
         
+        let input = TamagotchiPopupViewModel.Input(
+//            closeButtonTapped: closeButton.rx.tap,
+            confirmButtonTapped: startButton.rx.tap,
+        )
+        
+        let output = viewModel.transform(input: input)
+        
+        
+        
         closeButton.rx.tap
             .bind(with: self) { owner, value in
-                UserDefaults.standard.removeObject(forKey: owner.nameLabel.text!)
                 owner.dismiss(animated: true)
             }.disposed(by: disposeBag)
         
         startButton.rx.tap
             .bind(with: self) { owner, value in
-                UserDefaults.standard.set(true, forKey: "isLogin")
-                guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
-                      let sceneDelegate = windowScene.delegate as? SceneDelegate else {
-                    return
+                if owner.isChange {
+                    // 변경하기
+                    guard let row = owner.row else { return }
+                    let selectedNum = row + 1
+                    // 선택한 다마고치 정보 저장
+                    UserDefaults.standard.set(selectedNum, forKey: Tamagotchi.dummyData[row].1)
+                    owner.dismiss(animated: true)
+                } else {
+                    // 초기 선택
+                    guard let row = owner.row else { return }
+                    let selectedNum = row + 1
+                    UserDefaults.standard.set(selectedNum, forKey: Tamagotchi.dummyData[row].1)
+                    guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+                          let sceneDelegate = windowScene.delegate as? SceneDelegate else {
+                        return
+                    }
+                    let vc = TamagotchiTabViewController()
+                    UserDefaults.standard.set(true, forKey: "isLogin")
+                    sceneDelegate.changeRootView(vc)
                 }
-                let vc = TamagotchiTabViewController()
-                sceneDelegate.changeRootView(vc)
+               
                 
             }.disposed(by: disposeBag)
     }

@@ -33,10 +33,8 @@ class SettingViewController: UIViewController {
     }
     
     func bind() {
-        
         navigationItem.leftBarButtonItem?.rx.tap
             .bind(with: self) { owner, value in
-                print("dd")
                 owner.navigationController?.popViewController(animated: true)
             }.disposed(by: disposeBag)
         
@@ -48,7 +46,6 @@ class SettingViewController: UIViewController {
         
         tableView.rx.modelSelected(SettingMenu.self)
             .bind(with: self) { owner, menu in
-                
                 switch menu {
                 case .setName:
                     let vc = SetUserNameViewController()
@@ -57,9 +54,20 @@ class SettingViewController: UIViewController {
                     let vc = SetTamagotchViewController()
                     owner.navigationController?.pushViewController(vc, animated: true)
                 case .reset:
-                    owner.showAlertType2(title: "데이터 초기화", message: "정말 다시 처음부터 시작하실 건가요?")
+                    owner.showAlertType2(title: "데이터 초기화", message: "정말 다시 처음부터 시작하실 건가요?") {
+                        // 데이터 초기화
+                        guard let domain = Bundle.main.bundleIdentifier else { return }
+                        UserDefaults.standard.removePersistentDomain(forName: domain)
+                        
+                        // 초기 화면으로 이동
+                        guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+                              let sceneDelegate = windowScene.delegate as? SceneDelegate else {
+                            return
+                        }
+                        let vc = SetTamagotchViewController()
+                        sceneDelegate.changeRootView(vc)
+                    }
                 }
-                
             }.disposed(by: disposeBag)
         
     }
