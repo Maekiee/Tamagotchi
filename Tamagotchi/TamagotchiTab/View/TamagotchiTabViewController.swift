@@ -119,7 +119,10 @@ final class TamagotchiTabViewController: UIViewController {
         configHeiracy()
         configLayout()
         configView()
-        
+//        let tamagotchi = Tamagotchi.dummyData.compactMap {
+//            return UserDefaults.standard.object(forKey: $0.1)
+//        }
+//            .filter { $0 != nil }
         bind()
     }
     
@@ -133,11 +136,13 @@ final class TamagotchiTabViewController: UIViewController {
         
         let output = viewModel.transform(input: input)
         
+        
+        print(output.tamagotchiImage.value)
         output.levelCount
             .bind(with: self) { owner, count in
                 owner.levelLabel.text = "Lv\(count) · "
                 let tamagotchi: Int = count > 9 ? 9 : count
-                owner.tamagotchiImage.image = UIImage(named: "1-\(tamagotchi)")
+                owner.tamagotchiImage.image = UIImage(named: "\(output.tamagotchiImage.value)-\(tamagotchi)")
             }.disposed(by: disposeBag)
         
         output.feedCount

@@ -92,6 +92,7 @@ final class TamagotchiPopupViewController: UIViewController {
         
         closeButton.rx.tap
             .bind(with: self) { owner, value in
+                UserDefaults.standard.removeObject(forKey: owner.nameLabel.text!)
                 owner.dismiss(animated: true)
             }.disposed(by: disposeBag)
         

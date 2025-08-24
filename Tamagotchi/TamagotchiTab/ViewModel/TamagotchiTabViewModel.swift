@@ -18,7 +18,7 @@ class TamagotchiTabViewModel {
         let levelCount: BehaviorRelay<Int>
         let feedCount: BehaviorRelay<Int>
         let waterCount: BehaviorRelay<Int>
-        
+        let tamagotchiImage: BehaviorRelay<Int>
     }
     
     init() { }
@@ -29,6 +29,8 @@ class TamagotchiTabViewModel {
         let levelCount = BehaviorRelay<Int>(value: 1)
         let feedCount = BehaviorRelay<Int>(value: 0)
         let waterCount = BehaviorRelay<Int>(value: 0)
+        let tamagotchiImage = BehaviorRelay<Int>(value: 1)
+        
         
 
         input.feedButtonTap
@@ -84,12 +86,20 @@ class TamagotchiTabViewModel {
             }.disposed(by: disposeBag)
 
         
-         
+        let tamagotchi = Tamagotchi.dummyData.compactMap {
+            return UserDefaults.standard.object(forKey: $0.1) as? Int
+        }
+        
+        if let tamagotchi = tamagotchi.first {
+            tamagotchiImage.accept(tamagotchi)
+        }
         
         return Output(
             levelCount: levelCount,
             feedCount: feedCount,
-            waterCount: waterCount)
+            waterCount: waterCount,
+            tamagotchiImage: tamagotchiImage,
+        )
     }
     
     private func validateCount(value: String) -> Int {
