@@ -149,6 +149,13 @@ final class TamagotchiTabViewController: UIViewController {
             .bind(with: self) { owner, count in
                 owner.waterLabel.text = "물방울 \(count)개"
             }.disposed(by: disposeBag)
+        
+        
+        navigationItem.rightBarButtonItem?.rx.tap
+            .bind(with: self) { owner, value in
+                let vc = SettingViewController()
+                owner.navigationController?.pushViewController(vc, animated: true)
+            }.disposed(by: disposeBag)
     }
     
     
@@ -258,8 +265,8 @@ extension TamagotchiTabViewController {
         navigationItem.rightBarButtonItem = UIBarButtonItem(
             image: UIImage(systemName: "person.circle"),
             style: .plain,
-            target: self,
-            action: #selector(testActionTapped))
+            target: nil,
+            action: nil)
     }
     
 }
