@@ -281,8 +281,11 @@ extension TamagotchiTabViewController {
     }
     
     private func configView() {
+        if let userName = UserDefaults.standard.string(forKey: "UserName") {
+            navigationItem.title = "\(userName)님의 다마고치"
+        }
         view.backgroundColor = .white
-        navigationItem.title = "대장님의 다마고치"
+        
         navigationItem.rightBarButtonItem = UIBarButtonItem(
             image: UIImage(systemName: "person.circle"),
             style: .plain,
