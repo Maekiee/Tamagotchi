@@ -57,7 +57,7 @@ class SettingViewController: UIViewController {
                     let vc = SetTamagotchViewController()
                     owner.navigationController?.pushViewController(vc, animated: true)
                 case .reset:
-                    print("데이터 초기화")
+                    owner.showAlertType2(title: "데이터 초기화", message: "정말 다시 처음부터 시작하실 건가요?")
                 }
                 
             }.disposed(by: disposeBag)
