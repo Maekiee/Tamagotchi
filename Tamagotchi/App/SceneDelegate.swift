@@ -14,7 +14,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         let isLogin = UserDefaults.standard.bool(forKey: "isLogin")
         
-        window?.rootViewController = UINavigationController(rootViewController: isLogin ? TamagotchiTabViewController() : SetTamagotchViewController())
+        window?.rootViewController = UINavigationController(rootViewController: isLogin ? MainTabBarViewController() : SetTamagotchViewController())
         
         window?.makeKeyAndVisible()
         

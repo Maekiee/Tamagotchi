@@ -10,17 +10,17 @@ class MainTabBarViewController: UITabBarController {
     
     func createTabBarController() {
         let tamagotchiTabVC = TamagotchiTabViewController()
-        let secondTabVc = UIViewController()
-        let settingTabVc = UIViewController()
+        let secondTabVc = LottoViewController()
+        let moviewVC = MovieViewController()
         
         let tamagotchiTabNav = UINavigationController(rootViewController: tamagotchiTabVC)
         let secondTabNav = UINavigationController(rootViewController: secondTabVc)
-        let settingTabNav = UINavigationController(rootViewController: settingTabVc)
+        let movieNav = UINavigationController(rootViewController: moviewVC)
         
         tamagotchiTabNav.tabBarItem = UITabBarItem(title: "", image: UIImage(systemName: "sunset"), selectedImage: UIImage(systemName: "sunset"))
-        secondTabNav.tabBarItem = UITabBarItem(title: "", image: UIImage(systemName: "figure.outdoor.soccer"), selectedImage: UIImage(systemName: "figure.outdoor.soccer"))
-        settingTabNav.tabBarItem = UITabBarItem(title: "", image: UIImage(systemName: "gearshape"), selectedImage: UIImage(systemName: "gearshape"))
+        secondTabNav.tabBarItem = UITabBarItem(title: "", image: UIImage(systemName: "bitcoinsign.circle"), selectedImage: UIImage(systemName: "bitcoinsign.circle"))
+        movieNav.tabBarItem = UITabBarItem(title: "", image: UIImage(systemName: "popcorn.circle"), selectedImage: UIImage(systemName: "popcorn.circle"))
         
-        setViewControllers([tamagotchiTabNav, secondTabNav, settingTabNav], animated: false)
+        setViewControllers([tamagotchiTabNav, secondTabNav, movieNav], animated: false)
     }
 }

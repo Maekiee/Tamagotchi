@@ -24,7 +24,7 @@
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
             uuid = "F01D21E2-5534-473D-8C08-8D9854F5CEBA"
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Tamagotchi/Service/UserDefaultManager.swift"
@@ -34,36 +34,22 @@
             endingLineNumber = "8"
             landmarkName = "UserDataManager"
             landmarkType = "3">
-            <Locations>
-               <Location
-                  uuid = "F01D21E2-5534-473D-8C08-8D9854F5CEBA - ac5b978019c6e4d3"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "Tamagotchi.UserDataManager.__allocating_init() -&gt; Tamagotchi.UserDataManager"
-                  moduleName = "Tamagotchi.debug.dylib"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/cookie/workspace/SeSAC/task-project/Tamagotchi/Tamagotchi/Service/UserDefaultManager.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "0"
-                  endingLineNumber = "0">
-               </Location>
-               <Location
-                  uuid = "F01D21E2-5534-473D-8C08-8D9854F5CEBA - c9385456dea4b833"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "Tamagotchi.UserDataManager.() -&gt; Tamagotchi.UserDataManager.init() -&gt; Tamagotchi.UserDataManager"
-                  moduleName = "Tamagotchi.debug.dylib"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/cookie/workspace/SeSAC/task-project/Tamagotchi/Tamagotchi/Service/UserDefaultManager.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "9"
-                  endingLineNumber = "9">
-               </Location>
-            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "556D6510-6A87-4BEB-8B65-698934FF80AC"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Tamagotchi/Service/UserDefaultManager.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "7"
+            endingLineNumber = "7"
+            landmarkName = "UserDataManager"
+            landmarkType = "3">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>
