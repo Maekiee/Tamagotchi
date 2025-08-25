@@ -9,8 +9,7 @@ class MovieViewController: UIViewController {
     let tableView = UITableView()
     
     
-    let list: BehaviorRelay<[String]> = BehaviorRelay(value: ["a","b","c","d","e","f"])
-    let items = BehaviorRelay(value: ["a","b","c","d","e","f"])
+    let list: BehaviorRelay<[BoxOffice]> = BehaviorRelay(value: [])
     let disposeBag = DisposeBag()
     
     override func viewDidLoad() {
@@ -26,19 +25,24 @@ class MovieViewController: UIViewController {
         list
             .bind(to: tableView.rx.items(cellIdentifier: MovieTableViewCell.identifier, cellType: MovieTableViewCell.self)) {
                 (row, element, cell) in
-//                let text = "\(element.drwNoDate)일, \(element.firstAccumamnt.formatted())원"
-                cell.usernameLabel.text = "테스트"
-//                text
+                cell.usernameLabel.text = "\(element.rank). \(element.movieNm)"
             }.disposed(by: disposeBag)
         
         
-        tableView.rx.modelSelected(Int.self)
-            .map { "셀 \($0)" }
-            .bind(with: self) { owner, number in
-                var original = owner.items.value
-                original.insert(number, at: 0)
-                
-                owner.items.accept(original)
+        searchBar.rx.searchButtonClicked
+            .withLatestFrom(searchBar.rx.text.orEmpty)
+            .distinctUntilChanged()
+            .flatMap { text in
+                CustomObservable.getMovie(query: text)
+            }.subscribe(with: self) {owner, value in
+                let data = value.boxOfficeResult.dailyBoxOfficeList
+                owner.list.accept(data)
+            } onError: { owner, error in
+                print(error)
+            } onCompleted: { owner in
+                print("complted")
+            } onDisposed: { owner in
+                print("disposed")
             }.disposed(by: disposeBag)
     }
     

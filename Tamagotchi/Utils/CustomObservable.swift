@@ -21,6 +21,21 @@ struct Lotto: Decodable {
     let bnusNo: Int
 }
 
+struct BoxOfficeResult: Decodable {
+    let boxOfficeResult: DailyBoxOfficeList
+}
+
+struct DailyBoxOfficeList: Decodable {
+    let dailyBoxOfficeList: [BoxOffice]
+}
+
+struct BoxOffice: Decodable {
+    let rank: String
+    let movieNm: String
+    let openDt: String
+}
+
+
 final class CustomObservable {
     
     static func getLotto(query: String) -> Observable<Lotto> {
@@ -41,13 +56,14 @@ final class CustomObservable {
     }
     
     
-    static func getMovie(query: String) -> Observable<Lotto> {
-        return  Observable<Lotto>.create { observer in
-            let url = ""
+    static func getMovie(query: String) -> Observable<BoxOfficeResult> {
+        return  Observable<BoxOfficeResult>.create { observer in
+            let url = "https://kobis.or.kr/kobisopenapi/webservice/rest/boxoffice/searchDailyBoxOfficeList.json?key=87326d7892a79b81ae16230feed7ac72&targetDt=\(query)"
 
-            AF.request(url).responseDecodable(of: Lotto.self) { response in
+            AF.request(url).responseDecodable(of: BoxOfficeResult.self) { response in
                 switch response.result {
                 case .success(let value):
+                    print(value)
                     observer.onNext(value)
                     observer.onCompleted()
                 case .failure(let error):
