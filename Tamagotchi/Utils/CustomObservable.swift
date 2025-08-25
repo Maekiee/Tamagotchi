@@ -39,4 +39,22 @@ final class CustomObservable {
             return Disposables.create()
         }
     }
+    
+    
+    static func getMovie(query: String) -> Observable<Lotto> {
+        return  Observable<Lotto>.create { observer in
+            let url = ""
+
+            AF.request(url).responseDecodable(of: Lotto.self) { response in
+                switch response.result {
+                case .success(let value):
+                    observer.onNext(value)
+                    observer.onCompleted()
+                case .failure(let error):
+                    print(error)
+                }
+            }
+            return Disposables.create()
+        }
+    }
 }
