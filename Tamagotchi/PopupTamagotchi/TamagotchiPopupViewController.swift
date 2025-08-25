@@ -83,7 +83,7 @@ final class TamagotchiPopupViewController: UIViewController {
     private let isChange: Bool = UserDefaults.standard.bool(forKey: "isLogin")
     var row:Int?
     
-    var popChanedImage: (() -> Void)?
+    var popChanedImage: ((Int) -> Void)?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -115,7 +115,7 @@ final class TamagotchiPopupViewController: UIViewController {
                     // 선택한 다마고치 정보 저장
                     print("팝업 선택 번호", selectedNum)
                     UserDefaults.standard.set(selectedNum, forKey: Tamagotchi.dummyData[row].1)
-                    owner.popChanedImage?()
+                    owner.popChanedImage?(selectedNum)
                     owner.dismiss(animated: true)
                 } else {
                     // 초기 선택
@@ -127,6 +127,7 @@ final class TamagotchiPopupViewController: UIViewController {
                         return
                     }
                     let vc = TamagotchiTabViewController()
+                    vc.viewModel.tamagotchiImage.accept(selectedNum)
                     UserDefaults.standard.set(true, forKey: "isLogin")
                     sceneDelegate.changeRootView(vc)
                 }

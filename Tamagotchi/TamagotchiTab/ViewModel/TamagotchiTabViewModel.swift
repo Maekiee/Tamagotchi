@@ -23,17 +23,8 @@ class TamagotchiTabViewModel {
     
     init() { }
     
-    let tamagotchiImage: BehaviorRelay<Int> = BehaviorRelay<Int>(value: 2)
+    var tamagotchiImage: BehaviorRelay<Int> = BehaviorRelay<Int>(value: 1)
     
-    func changeImage() {
-        let tamagotchi = Tamagotchi.dummyData.compactMap {
-            return UserDefaults.standard.object(forKey: $0.1) as? Int
-        }
-        
-        if let tamagotchi = tamagotchi.first {
-            tamagotchiImage.accept(tamagotchi)
-        }
-    }
     
     func speakingTamagotchi() {
         
@@ -45,7 +36,6 @@ class TamagotchiTabViewModel {
         let feedCount = BehaviorRelay<Int>(value: 0)
         let waterCount = BehaviorRelay<Int>(value: 0)
         let talkLabel = BehaviorRelay<String>(value: "안녕하세요 대장님 만나서 반갑습니다.")
-//        let tamagotchiImage = BehaviorRelay<Int>(value: 1)
         
         
 

@@ -19,7 +19,7 @@ final class TamagotchiTabViewController: UIViewController {
     }()
     private let tamagotchiImage: UIImageView = {
         let view = UIImageView()
-        view.image = UIImage(named: "1-1")
+//        view.image = UIImage(named: "1-1")
         return view
     }()
     private let nameContainer: UIView = {
@@ -148,10 +148,14 @@ final class TamagotchiTabViewController: UIViewController {
         
         viewModel.tamagotchiImage
             .bind(with: self) { owner, value in
-                let count = output.levelCount.value > 9 ? 9 : output.levelCount.value
-                print("카운트", count)
-                owner.nameLabel.text = Tamagotchi.dummyData[value - 1].1
-                owner.tamagotchiImage.image = UIImage(named: "\(value)-\(count)")
+                let level = output.levelCount.value > 9 ? 9 : output.levelCount.value
+                let index = value - 1
+                owner.nameLabel.text = Tamagotchi.dummyData[index].1
+                let aa = UserDefaults.standard.string(forKey: Tamagotchi.dummyData[index].1)
+                print("현재 다마고치", aa)
+                
+                
+                owner.tamagotchiImage.image = UIImage(named: "\(value)-\(level)")
             }.disposed(by: disposeBag)
         
         output.levelCount
@@ -276,9 +280,6 @@ extension TamagotchiTabViewController {
         
     }
     
-    @objc func testActionTapped() {
-        print(#function)
-    }
     
     private func configView() {
         if let userName = UserDefaults.standard.string(forKey: "UserName") {

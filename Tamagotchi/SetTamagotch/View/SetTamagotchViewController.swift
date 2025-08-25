@@ -66,7 +66,7 @@ final class SetTamagotchViewController: UIViewController {
                 vc.modalPresentationStyle = .overCurrentContext
                 vc.modalTransitionStyle = .crossDissolve
                 vc.row = indexPath.row
-                vc.popChanedImage = { [weak self] in
+                vc.popChanedImage = { [weak self] number in
                     guard let _ = self else { return }
                     owner.navigationController?.popToRootViewController(animated: true)
                 
@@ -74,6 +74,7 @@ final class SetTamagotchViewController: UIViewController {
                     if let nav = owner.navigationController,
                        let rootVC = nav.viewControllers.first as? TamagotchiTabViewController {
                         rootVC.viewModel.changeImage()
+                        rootVC.viewModel.tamagotchiImage.accept(number)
                     }
 
                     owner.navigationController?.popToRootViewController(animated: true)
