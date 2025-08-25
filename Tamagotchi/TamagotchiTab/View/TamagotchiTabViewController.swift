@@ -125,8 +125,7 @@ final class TamagotchiTabViewController: UIViewController {
     
     override func viewIsAppearing(_ animated: Bool) {
         super.viewIsAppearing(animated)
-        viewModel.changeImage()
-        let talk = Tamagotchi.talk.randomElement()!
+        let talk = viewModel.randomTalk()
         self.bubbleTalkLable.text = talk
         print(#function)
     }
@@ -142,19 +141,23 @@ final class TamagotchiTabViewController: UIViewController {
         let output = viewModel.transform(input: input)
         
         
+        
+        
         output.talkLable
             .bind(to: bubbleTalkLable.rx.text)
             .disposed(by: disposeBag)
+        
+        viewModel.userName
+            .bind(with: self) { owner, nickname in
+                owner.navigationItem.title = "\(nickname)님의 다마고치"
+            }.disposed(by: disposeBag)
         
         viewModel.tamagotchiImage
             .bind(with: self) { owner, value in
                 let level = output.levelCount.value > 9 ? 9 : output.levelCount.value
                 let index = value - 1
                 owner.nameLabel.text = Tamagotchi.dummyData[index].1
-                let aa = UserDefaults.standard.string(forKey: Tamagotchi.dummyData[index].1)
-                print("현재 다마고치", aa)
-                
-                
+//                let aa = UserDefaults.standard.string(forKey: Tamagotchi.dummyData[index].1)
                 owner.tamagotchiImage.image = UIImage(named: "\(value)-\(level)")
             }.disposed(by: disposeBag)
         
@@ -282,9 +285,6 @@ extension TamagotchiTabViewController {
     
     
     private func configView() {
-        if let userName = UserDefaults.standard.string(forKey: "UserName") {
-            navigationItem.title = "\(userName)님의 다마고치"
-        }
         view.backgroundColor = .white
         
         navigationItem.rightBarButtonItem = UIBarButtonItem(

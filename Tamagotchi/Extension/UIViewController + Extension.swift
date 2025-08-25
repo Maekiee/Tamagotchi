@@ -13,7 +13,7 @@ extension UIViewController {
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
         let alertActionNo = UIAlertAction(title: "취소", style: .default, handler: nil)
         let alertActionYes = UIAlertAction(title: "확인", style: .default) { [weak self]_ in
-            guard let self = self else { return }
+            guard let _ = self else { return }
             completed()
         }
         alertController.addAction(alertActionNo)

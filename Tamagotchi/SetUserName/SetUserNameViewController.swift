@@ -56,7 +56,16 @@ class SetUserNameViewController: UIViewController {
             .withLatestFrom(userNameTextField.rx.text)
             .bind(with: self) { owner, text in
                 guard let userName = text else { return }
+                print("이름 변경 화면:", userName)
                 UserDefaults.standard.set(userName, forKey: "UserName")
+                
+                if let nav = owner.navigationController,
+                   let rootVC = nav.viewControllers.first as? TamagotchiTabViewController {
+                    rootVC.viewModel.userName.accept(userName)
+                }
+                
+                owner.navigationController?.popToRootViewController(animated: true)
+
             }.disposed(by: disposeBag)
         
     }

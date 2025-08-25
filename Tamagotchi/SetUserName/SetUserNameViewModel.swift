@@ -16,7 +16,7 @@ class SetUserNameViewModel {
     init() { }
     
     func transform(input: Input) -> Output {
-        let validationLabel: BehaviorRelay<String> = BehaviorRelay(value: "대장님")
+        let validationLabel: BehaviorRelay<String> = BehaviorRelay(value: "대장")
         
         input.textFieldValue
             .bind(with: self) { owner, text in

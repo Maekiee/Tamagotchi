@@ -6,6 +6,8 @@ import RxCocoa
 class TamagotchiTabViewModel {
     private let disposeBag = DisposeBag()
     
+    
+    
     struct Input {
         let feedButtonTap: ControlEvent<Void>
         let feedTextfieldText: ControlProperty<String>
@@ -24,10 +26,20 @@ class TamagotchiTabViewModel {
     init() { }
     
     var tamagotchiImage: BehaviorRelay<Int> = BehaviorRelay<Int>(value: 1)
+    var userName: BehaviorRelay<String> = BehaviorRelay<String>(value: "대장")
     
+    let speak = [
+        "복습 아직 안하셨다구요? 지금 잠이 오세여? %@님??",
+        "%@님 테이블뷰컨톨러와 뷰컨트롤러는 어떤 차이가 있을까요?",
+        "%@님 오늘 깃허브 푸시 하셨나요?",
+        "%@님 Rx는 이해가 잘 되셨나요?",
+        "%@님은 알다가도 모르겠어요",
+        "다음주 시험인데 공부 많이합시다 %@님!"
+    ]
     
-    func speakingTamagotchi() {
-        
+    func randomTalk() -> String {
+        let talking = speak.randomElement()!
+        return String(format: talking, userName.value)
     }
     
     func transform(input: Input) -> Output {
@@ -35,9 +47,7 @@ class TamagotchiTabViewModel {
         let levelCount = BehaviorRelay<Int>(value: 1)
         let feedCount = BehaviorRelay<Int>(value: 0)
         let waterCount = BehaviorRelay<Int>(value: 0)
-        let talkLabel = BehaviorRelay<String>(value: "안녕하세요 대장님 만나서 반갑습니다.")
-        
-        
+        let talkLabel = BehaviorRelay<String>(value: "")
 
         input.feedButtonTap
             .withLatestFrom(input.feedTextfieldText)
@@ -46,9 +56,10 @@ class TamagotchiTabViewModel {
                 return newValue < 100 ? oldValue + newValue : oldValue
             }
             .bind(with: self) { owner, value in
-                let randomTalk = Tamagotchi.talk.randomElement()!
+                let randomSpeak = owner.randomTalk()
                 feedCount.accept(value)
-                talkLabel.accept(randomTalk)
+                talkLabel.accept(randomSpeak)
+                print(randomSpeak)
             }
             .disposed(by: disposeBag)
         
@@ -60,8 +71,8 @@ class TamagotchiTabViewModel {
                 return newValue < 50 ? oldValue + newValue : oldValue
             }
             .bind(with: self) { owner, value in
-                let randomTalk = Tamagotchi.talk.randomElement()!
-                talkLabel.accept(randomTalk)
+                let randomSpeak = owner.randomTalk()
+                talkLabel.accept(randomSpeak)
                 waterCount.accept(value)
             }
             .disposed(by: disposeBag)

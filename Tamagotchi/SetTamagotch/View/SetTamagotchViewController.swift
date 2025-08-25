@@ -27,14 +27,14 @@ struct Tamagotchi {
         ("noImage", "준비중이에요"),
     ]
     
-    static let talk = [
-        "복습 아직 안하셨다구요? 지금 잠이 오세여? 대장님??",
-        "테이블뷰컨톨러와 뷰컨트롤러는 어떤 차이가 있을까요?",
-        "고래밥님 오늘 깃허브 푸시 하셨나요?",
-        "Rx는 뭔가 많이 복잡하네요",
-        "알다가도 모르겠어요",
-        "다음주 시험인데 공부 많이합시다 대장님!"
-    ]
+//    static let talk = [
+//        "복습 아직 안하셨다구요? 지금 잠이 오세여? 대장님??",
+//        "테이블뷰컨톨러와 뷰컨트롤러는 어떤 차이가 있을까요?",
+//        "고래밥님 오늘 깃허브 푸시 하셨나요?",
+//        "Rx는 뭔가 많이 복잡하네요",
+//        "알다가도 모르겠어요",
+//        "다음주 시험인데 공부 많이합시다 대장님!"
+//    ]
 }
 
 
@@ -73,7 +73,7 @@ final class SetTamagotchViewController: UIViewController {
                     // ??
                     if let nav = owner.navigationController,
                        let rootVC = nav.viewControllers.first as? TamagotchiTabViewController {
-                        rootVC.viewModel.changeImage()
+//                        rootVC.viewModel.changeImage()
                         rootVC.viewModel.tamagotchiImage.accept(number)
                     }
 
