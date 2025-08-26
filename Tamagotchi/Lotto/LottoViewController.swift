@@ -2,7 +2,7 @@ import UIKit
 import SnapKit
 import RxSwift
 import RxCocoa
-
+import Toast
 
 final class LottoViewController: UIViewController {
     private let viewModel = LottoViewModel()
@@ -109,6 +109,7 @@ final class LottoViewController: UIViewController {
         output.showError.bind(with: self) { owner, error in
             if error == .invalid {
                 print("에러 토스트 메세지")
+                owner.view.makeToast(error.errorUserResponse, duration: 1.0, position: .center)
             } else {
                 owner.showAlert(tip: error.errorUserResponse)
             }

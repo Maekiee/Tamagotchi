@@ -40,7 +40,7 @@ class MovieViewController: UIViewController {
         output.errorMessage
             .bind(with: self) { owner, errorType in
                 if errorType == .invalid {
-                    print("에러 토스트 메세지")
+                    owner.view.makeToast(errorType.errorUserResponse, duration: 1.0, position: .center)
                 } else {
                     owner.showAlert(tip: errorType.errorUserResponse)
                 }
