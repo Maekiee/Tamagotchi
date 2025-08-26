@@ -62,18 +62,17 @@ final class CustomObservable {
     }
     
     
-    static func getMovie(query: String) -> Observable<BoxOfficeResult> {
-        return  Observable<BoxOfficeResult>.create { observer in
+    static func getMovie(query: String) -> Single<Result<BoxOfficeResult, CustomError>> {
+        return  Single.create { observer in
             let url = "https://kobis.or.kr/kobisopenapi/webservice/rest/boxoffice/searchDailyBoxOfficeList.json?key=87326d7892a79b81ae16230feed7ac72&targetDt=\(query)"
 
             AF.request(url).responseDecodable(of: BoxOfficeResult.self) { response in
                 switch response.result {
                 case .success(let value):
-                    print(value)
-                    observer.onNext(value)
-                    observer.onCompleted()
+                    observer(.success(.success(value)))
                 case .failure(let error):
-                    print(error)
+                    print("에러:", error)
+                    observer(.success(.failure(.invalid)))
                 }
             }
             return Disposables.create()

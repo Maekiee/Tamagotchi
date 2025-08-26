@@ -8,9 +8,10 @@ class MovieViewController: UIViewController {
     let searchBar = UISearchBar()
     let tableView = UITableView()
     
-    
     let list: BehaviorRelay<[BoxOffice]> = BehaviorRelay(value: [])
     let disposeBag = DisposeBag()
+    
+    let viewModel = MovieViewModel()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -22,28 +23,22 @@ class MovieViewController: UIViewController {
     }
     
     private func bind() {
-        list
+        
+        let input = MovieViewModel.Input(
+            searchTap: searchBar.rx.searchButtonClicked,
+            searchText: searchBar.rx.text.orEmpty
+        )
+        
+        let output = viewModel.transform(input: input)
+        
+        output.list
             .bind(to: tableView.rx.items(cellIdentifier: MovieTableViewCell.identifier, cellType: MovieTableViewCell.self)) {
                 (row, element, cell) in
                 cell.usernameLabel.text = "\(element.rank). \(element.movieNm)"
             }.disposed(by: disposeBag)
         
         
-        searchBar.rx.searchButtonClicked
-            .withLatestFrom(searchBar.rx.text.orEmpty)
-            .distinctUntilChanged()
-            .flatMap { text in
-                CustomObservable.getMovie(query: text)
-            }.subscribe(with: self) {owner, value in
-                let data = value.boxOfficeResult.dailyBoxOfficeList
-                owner.list.accept(data)
-            } onError: { owner, error in
-                print(error)
-            } onCompleted: { owner in
-                print("complted")
-            } onDisposed: { owner in
-                print("disposed")
-            }.disposed(by: disposeBag)
+      
     }
     
 
