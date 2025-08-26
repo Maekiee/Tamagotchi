@@ -22,14 +22,12 @@ final class LottoViewController: UIViewController {
         return button
     }()
     
-    
     lazy var stackView: UIStackView = {
         let view = UIStackView()
         view.axis = .horizontal
         view.spacing = 2
         return view
     }()
-    
     
     let resultLabel1: UILabel = {
         let label = UILabel()
@@ -85,49 +83,27 @@ final class LottoViewController: UIViewController {
     }
     
     func bind() {
+        let input = LottoViewModel.Input(
+            textFieldText: textfield.rx.text.orEmpty,
+            submitButtonTapped: submitButton.rx.tap,
+        )
+
+        let output = viewModel.transform(input: input)
         
-        submitButton.rx.tap
-            .withLatestFrom(textfield.rx.text.orEmpty)
-            .distinctUntilChanged()
-            .flatMap{ text in
-                CustomObservable.getLotto(query: text)
-            }
-            .subscribe(with: self) { owner, text in
-                owner.resultLabel1.text = String(text.drwtNo1)
-                owner.resultLabel2.text = String(text.drwtNo2)
-                owner.resultLabel3.text = String(text.drwtNo3)
-                owner.resultLabel4.text = String(text.drwtNo4)
-                owner.resultLabel5.text = String(text.drwtNo5)
-                owner.resultLabel6.text = String(text.drwtNo6)
-                owner.resultLabel7.text = String(text.bnusNo)
-//                var items = owner.lottoItems.value
-//                items.append(text.drwtNo1)
-//                items.append(text.drwtNo2)
-//                items.append(text.drwtNo3)
-//                items.append(text.drwtNo4)
-//                items.append(text.drwtNo5)
-//                items.append(text.drwtNo6)
-//                items.append(text.bnusNo)
-//                owner.lottoItems.accept(items)
-                
-                owner.resultLabel1.text = String(text.drwtNo1)
-            } onError: { owner, error in
-                
-            } onCompleted: { owner in
-                
-            } onDisposed: {  owner in
-                
-            }.disposed(by: disposeBag)
-        
-        
-//        let input = LottoViewModel.Input(
-//            textFieldText: textfield.rx.text.orEmpty,
-//            submitButtonTapped: submitButton.rx.tap,
-//        )
-//        
-//        let output = viewModel.transform(input: input)
-//        
-//        let a = textfield.rx.text.orEmpty
+        output.drwNo1.bind(to: resultLabel1.rx.text)
+            .disposed(by: disposeBag)
+        output.drwNo2.bind(to: resultLabel2.rx.text)
+            .disposed(by: disposeBag)
+        output.drwNo3.bind(to: resultLabel3.rx.text)
+            .disposed(by: disposeBag)
+        output.drwNo4.bind(to: resultLabel4.rx.text)
+            .disposed(by: disposeBag)
+        output.drwNo5.bind(to: resultLabel5.rx.text)
+            .disposed(by: disposeBag)
+        output.drwNo6.bind(to: resultLabel6.rx.text)
+            .disposed(by: disposeBag)
+        output.bnusNum.bind(to: resultLabel7.rx.text)
+            .disposed(by: disposeBag)
     }
     
 }
