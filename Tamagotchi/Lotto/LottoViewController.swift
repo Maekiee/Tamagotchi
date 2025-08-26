@@ -104,6 +104,15 @@ final class LottoViewController: UIViewController {
             .disposed(by: disposeBag)
         output.bnusNum.bind(to: resultLabel7.rx.text)
             .disposed(by: disposeBag)
+        
+        
+        output.showError.bind(with: self) { owner, error in
+            if error == .invalid {
+                print("에러 토스트 메세지")
+            } else {
+                owner.showAlert(tip: error.errorUserResponse)
+            }
+        }.disposed(by: disposeBag)
     }
     
 }

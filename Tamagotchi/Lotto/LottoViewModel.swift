@@ -18,6 +18,7 @@ final class LottoViewModel {
         let drwNo5: BehaviorRelay<String>
         let drwNo6: BehaviorRelay<String>
         let bnusNum: BehaviorRelay<String>
+        let showError: PublishRelay<CustomError>
     }
     
 //    init() { }
@@ -31,6 +32,8 @@ final class LottoViewModel {
         let drwNo5 = BehaviorRelay(value: "")
         let drwNo6 = BehaviorRelay(value: "")
         let bnusNum = BehaviorRelay(value: "")
+        
+        let showError =  PublishRelay<CustomError>()
         
         input.submitButtonTapped
             .withLatestFrom(input.textFieldText)
@@ -52,7 +55,7 @@ final class LottoViewModel {
                     drwNo6.accept(String(value.drwtNo6))
                     bnusNum.accept(String(value.bnusNo))
                 case .failure(let error):
-                    print("에러러러러러러", error.errorUserResponse)
+                    showError.accept(error)
                 }
 //
             } onError: { owner, error in
@@ -64,7 +67,7 @@ final class LottoViewModel {
             }.disposed(by: disposeBag)
         
         
-        return Output(drwNo1:drwNo1, drwNo2: drwNo2, drwNo3: drwNo3, drwNo4: drwNo4, drwNo5: drwNo5, drwNo6: drwNo6, bnusNum: bnusNum)
+        return Output(drwNo1:drwNo1, drwNo2: drwNo2, drwNo3: drwNo3, drwNo4: drwNo4, drwNo5: drwNo5, drwNo6: drwNo6, bnusNum: bnusNum, showError:showError)
     }
     
 }
