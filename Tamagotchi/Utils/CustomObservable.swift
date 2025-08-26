@@ -23,6 +23,7 @@ struct Lotto: Decodable {
 
 struct BoxOfficeResult: Decodable {
     let boxOfficeResult: DailyBoxOfficeList
+    let test: Int
 }
 
 struct DailyBoxOfficeList: Decodable {
@@ -35,10 +36,20 @@ struct BoxOffice: Decodable {
     let openDt: String
 }
 
-
-enum CustomError: Error {
-    case invalid
+enum CustomError: Int, Error {
+    case offline = 500
+    case invalid = 200
+    
+    var errorUserResponse: String {
+        switch self {
+        case .offline:
+            "네트워크 연결 상태를 확인해주세요"
+        case .invalid:
+            "잘못된 요청 입니다."
+        }
+    }
 }
+
 
 final class CustomObservable {
     
@@ -46,14 +57,16 @@ final class CustomObservable {
         return  Observable<Result<Lotto, CustomError>>.create { observer in
             let url = "https://www.dhlottery.co.kr/common.do?method=getLottoNumber&drwNo=\(query)"
 
-            AF.request(url).responseDecodable(of: Lotto.self) { response in
-                switch response.result {
+            AF.request(url).responseDecodable(of: Lotto.self) { res in
+                switch res.result {
                 case .success(let value):
                     observer.onNext(.success(value))
                     observer.onCompleted()
                 case .failure(let error):
-                    print(error)
-                    observer.onNext(.failure(.invalid))
+                    print("로또 네트워크 에러:", error)
+                    let code = res.response?.statusCode ?? 500
+                    let errorMessage = CustomError(rawValue: code) ?? .invalid
+                    observer.onNext(.failure(errorMessage))
                     observer.onCompleted()
                 }
             }
@@ -71,8 +84,10 @@ final class CustomObservable {
                 case .success(let value):
                     observer(.success(.success(value)))
                 case .failure(let error):
-                    print("에러:", error)
-                    observer(.success(.failure(.invalid)))
+                    print("박스오피스 에러:", error)
+                    let code = response.response?.statusCode ?? 500
+                    let errorMessage = CustomError(rawValue: code) ?? .invalid
+                    observer(.success(.failure(errorMessage)))
                 }
             }
             return Disposables.create()

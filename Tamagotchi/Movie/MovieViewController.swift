@@ -37,6 +37,15 @@ class MovieViewController: UIViewController {
                 cell.usernameLabel.text = "\(element.rank). \(element.movieNm)"
             }.disposed(by: disposeBag)
         
+        output.errorMessage
+            .bind(with: self) { owner, errorType in
+                if errorType == .invalid {
+                    print("에러 토스트 메세지")
+                } else {
+                    owner.showAlert(tip: errorType.errorUserResponse)
+                }
+            }.disposed(by: disposeBag)
+        
         
       
     }

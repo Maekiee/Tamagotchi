@@ -51,11 +51,8 @@ final class LottoViewModel {
                     drwNo5.accept(String(value.drwtNo5))
                     drwNo6.accept(String(value.drwtNo6))
                     bnusNum.accept(String(value.bnusNo))
-                case .failure(.invalid):
-                    // 와이파이 꺼진 경우 얼럿
-                    
-                    // 네트워크 통신 실패 (디코딩 오류 )시 토스트 메세지
-                    print("에러러러러러러")
+                case .failure(let error):
+                    print("에러러러러러러", error.errorUserResponse)
                 }
 //
             } onError: { owner, error in

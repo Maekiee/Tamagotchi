@@ -12,12 +12,13 @@ class MovieViewModel {
     
     struct Output {
         let list: BehaviorRelay<[BoxOffice]>
-        
+        let errorMessage: PublishRelay<CustomError>
     }
     
     func transform(input: Input) -> Output {
         
         let list = BehaviorRelay<[BoxOffice]>(value: [])
+        let errorMessage =  PublishRelay<CustomError>()
         
         input.searchTap
             .withLatestFrom(input.searchText)
@@ -28,8 +29,8 @@ class MovieViewModel {
                 switch resultValue {
                 case .success(let value):
                     list.accept(value.boxOfficeResult.dailyBoxOfficeList)
-                case .failure(.invalid):
-                    print("에러러러러럴")
+                case .failure(let error):
+                    errorMessage.accept(error)
                 }
             } onError: { owner, error in
                 print(error)
@@ -40,7 +41,7 @@ class MovieViewModel {
             }.disposed(by: disposeBag)
         
         
-        return Output(list: list)
+        return Output(list: list, errorMessage: errorMessage)
     }
     
 }
