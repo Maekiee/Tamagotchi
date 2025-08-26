@@ -37,16 +37,27 @@ final class LottoViewModel {
             .distinctUntilChanged()
             .flatMap { text in
                 CustomObservable.getLotto(query: text)
+                    .catch { _ in
+                        return Observable.never()
+                    }
             }
-            .subscribe(with: self) { owner, text in
-                print(text)
-                drwNo1.accept(String(text.drwtNo1))
-                drwNo2.accept(String(text.drwtNo2))
-                drwNo3.accept(String(text.drwtNo3))
-                drwNo4.accept(String(text.drwtNo4))
-                drwNo5.accept(String(text.drwtNo5))
-                drwNo6.accept(String(text.drwtNo6))
-                bnusNum.accept(String(text.bnusNo))
+            .subscribe(with: self) { owner, res in
+                switch res {
+                case .success(let value):
+                    drwNo1.accept(String(value.drwtNo1))
+                    drwNo2.accept(String(value.drwtNo2))
+                    drwNo3.accept(String(value.drwtNo3))
+                    drwNo4.accept(String(value.drwtNo4))
+                    drwNo5.accept(String(value.drwtNo5))
+                    drwNo6.accept(String(value.drwtNo6))
+                    bnusNum.accept(String(value.bnusNo))
+                case .failure(.invalid):
+                    // 와이파이 꺼진 경우 얼럿
+                    
+                    // 네트워크 통신 실패 (디코딩 오류 )시 토스트 메세지
+                    print("에러러러러러러")
+                }
+//
             } onError: { owner, error in
                 print("에러:", error)
             } onCompleted: { owner in

@@ -36,19 +36,25 @@ struct BoxOffice: Decodable {
 }
 
 
+enum CustomError: Error {
+    case invalid
+}
+
 final class CustomObservable {
     
-    static func getLotto(query: String) -> Observable<Lotto> {
-        return  Observable<Lotto>.create { observer in
+    static func getLotto(query: String) -> Observable<Result<Lotto, CustomError>> {
+        return  Observable<Result<Lotto, CustomError>>.create { observer in
             let url = "https://www.dhlottery.co.kr/common.do?method=getLottoNumber&drwNo=\(query)"
 
             AF.request(url).responseDecodable(of: Lotto.self) { response in
                 switch response.result {
                 case .success(let value):
-                    observer.onNext(value)
+                    observer.onNext(.success(value))
                     observer.onCompleted()
                 case .failure(let error):
                     print(error)
+                    observer.onNext(.failure(.invalid))
+                    observer.onCompleted()
                 }
             }
             return Disposables.create()
