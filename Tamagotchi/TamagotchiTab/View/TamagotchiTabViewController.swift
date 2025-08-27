@@ -7,7 +7,6 @@ final class TamagotchiTabViewController: UIViewController {
     private let bubbleTalk: UIImageView = {
         let view = UIImageView()
         view.image = UIImage(named: "bubble")
-//        view.backgroundColor = .green
         return view
     }()
     private let bubbleTalkLable: UILabel = {
@@ -19,7 +18,6 @@ final class TamagotchiTabViewController: UIViewController {
     }()
     private let tamagotchiImage: UIImageView = {
         let view = UIImageView()
-//        view.image = UIImage(named: "1-1")
         return view
     }()
     private let nameContainer: UIView = {
@@ -140,9 +138,6 @@ final class TamagotchiTabViewController: UIViewController {
         
         let output = viewModel.transform(input: input)
         
-        
-        
-        
         output.talkLable
             .bind(to: bubbleTalkLable.rx.text)
             .disposed(by: disposeBag)
@@ -196,9 +191,6 @@ extension TamagotchiTabViewController {
     
         bubbleTalk.addSubview(bubbleTalkLable)
         nameContainer.addSubview(nameLabel)
-        
-        
-        
     }
     
     private func configLayout() {

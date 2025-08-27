@@ -9,6 +9,8 @@ extension UIViewController {
         present(alertController, animated: true, completion: nil)
     }
     
+    
+    // 초기화 얼럿
     func showAlertType2(title: String, message: String, completed: @escaping (() -> Void) ) {
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
         let alertActionNo = UIAlertAction(title: "취소", style: .default, handler: nil)
