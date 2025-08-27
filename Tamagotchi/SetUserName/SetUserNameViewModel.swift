@@ -7,16 +7,19 @@ class SetUserNameViewModel {
     
     struct Input {
         let textFieldValue: ControlProperty<String>
+        let navRightBarItemTap: ControlEvent<()>?
     }
     
     struct Output {
         let validationLabel: BehaviorRelay<String>
+        let userName: BehaviorRelay<String>
     }
     
     init() { }
     
     func transform(input: Input) -> Output {
         let validationLabel: BehaviorRelay<String> = BehaviorRelay(value: "대장")
+        let userName: BehaviorRelay<String> = BehaviorRelay(value: "")
         
         input.textFieldValue
             .bind(with: self) { owner, text in
@@ -27,7 +30,17 @@ class SetUserNameViewModel {
                 }
             }.disposed(by: disposeBag)
         
-        return Output(validationLabel: validationLabel)
+        if let navTap = input.navRightBarItemTap  {
+            navTap.withLatestFrom(input.textFieldValue)
+                .bind(with: self) { owner, text in
+                    UserDefaults.standard.set(text, forKey: "UserName")
+                    
+                    userName.accept(text)
+                }.disposed(by: disposeBag)
+        }
+     
+        
+        return Output(validationLabel: validationLabel, userName: userName)
     }
     
     

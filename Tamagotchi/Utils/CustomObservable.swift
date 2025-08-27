@@ -4,37 +4,22 @@ import RxCocoa
 import Alamofire
 
 
-//struct Lotto: Decodable {
-//    let drwNoDate: String
-//    let firstAccumamnt: Int
+
+
+//struct BoxOfficeResult: Decodable {
+//    let boxOfficeResult: DailyBoxOfficeList
+//    let test: Int
 //}
-
-struct Lotto: Decodable {
-    let drwNoDate: String
-    let drwNo: Int
-    let drwtNo1: Int
-    let drwtNo2: Int
-    let drwtNo3: Int
-    let drwtNo4: Int
-    let drwtNo5: Int
-    let drwtNo6: Int
-    let bnusNo: Int
-}
-
-struct BoxOfficeResult: Decodable {
-    let boxOfficeResult: DailyBoxOfficeList
-    let test: Int
-}
-
-struct DailyBoxOfficeList: Decodable {
-    let dailyBoxOfficeList: [BoxOffice]
-}
-
-struct BoxOffice: Decodable {
-    let rank: String
-    let movieNm: String
-    let openDt: String
-}
+//
+//struct DailyBoxOfficeList: Decodable {
+//    let dailyBoxOfficeList: [BoxOffice]
+//}
+//
+//struct BoxOffice: Decodable {
+//    let rank: String
+//    let movieNm: String
+//    let openDt: String
+//}
 
 enum CustomError: Int, Error {
     case offline = 500

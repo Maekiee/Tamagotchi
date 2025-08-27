@@ -37,7 +37,8 @@ class SetUserNameViewController: UIViewController {
     func bind() {
         
         let input = SetUserNameViewModel.Input(
-            textFieldValue: userNameTextField.rx.text.orEmpty
+            textFieldValue: userNameTextField.rx.text.orEmpty,
+            navRightBarItemTap: navigationItem.rightBarButtonItem?.rx.tap
         )
         
         let output = viewModel.transform(input: input)
@@ -46,26 +47,15 @@ class SetUserNameViewController: UIViewController {
             .bind(to: validationLabel.rx.text)
             .disposed(by: disposeBag)
         
-//        navigationItem.rightBarButtonItem?.rx.tap
-//            .bind(with: self) { owner, value in
-//                let vc = SettingViewController()
-//                owner.navigationController?.pushViewController(vc, animated: true)
-//            }.disposed(by: disposeBag)
-        
-        navigationItem.rightBarButtonItem?.rx.tap
-            .withLatestFrom(userNameTextField.rx.text)
+        output.userName
+            .skip(1)
             .bind(with: self) { owner, text in
-                guard let userName = text else { return }
-                print("이름 변경 화면:", userName)
-                UserDefaults.standard.set(userName, forKey: "UserName")
-                
                 if let nav = owner.navigationController,
                    let rootVC = nav.viewControllers.first as? TamagotchiTabViewController {
-                    rootVC.viewModel.userName.accept(userName)
+                    rootVC.viewModel.userName.accept(text)
                 }
                 
                 owner.navigationController?.popToRootViewController(animated: true)
-
             }.disposed(by: disposeBag)
         
     }

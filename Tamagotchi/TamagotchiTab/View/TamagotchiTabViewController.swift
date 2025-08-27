@@ -157,7 +157,6 @@ final class TamagotchiTabViewController: UIViewController {
                 let level = output.levelCount.value > 9 ? 9 : output.levelCount.value
                 let index = value - 1
                 owner.nameLabel.text = Tamagotchi.dummyData[index].1
-//                let aa = UserDefaults.standard.string(forKey: Tamagotchi.dummyData[index].1)
                 owner.tamagotchiImage.image = UIImage(named: "\(value)-\(level)")
             }.disposed(by: disposeBag)
         
