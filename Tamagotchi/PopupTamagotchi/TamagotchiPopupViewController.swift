@@ -122,10 +122,9 @@ final class TamagotchiPopupViewController: UIViewController {
                     guard let row = owner.row else { return }
                     let selectedNum = row + 1
                     UserDefaults.standard.set(selectedNum, forKey: Tamagotchi.dummyData[row].1)
+                    
                     guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
-                          let sceneDelegate = windowScene.delegate as? SceneDelegate else {
-                        return
-                    }
+                          let sceneDelegate = windowScene.delegate as? SceneDelegate else { return }
                     let vc = TamagotchiTabViewController()
                     vc.viewModel.tamagotchiImage.accept(selectedNum)
                     UserDefaults.standard.set(true, forKey: "isLogin")
