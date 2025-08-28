@@ -44,6 +44,8 @@ final class SettingViewController: UIViewController {
             cell.configUI(element.rawValue)
         }.disposed(by: disposeBag)
         
+        
+        
         let input = SettingViewModel.Input(
             selectedMenu: tableView.rx.modelSelected(SettingMenu.self)
         )
@@ -52,6 +54,7 @@ final class SettingViewController: UIViewController {
         
         output.nextScreen
             .bind(with: self) { owner, value in
+                
                 if value.isAlert {
                     owner.showAlertType2(title: "데이터 초기화", message: "정말 다시 처음부터 시작하실 건가요?") {
                         // 초기 화면으로 이동

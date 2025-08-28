@@ -102,9 +102,10 @@ final class TamagotchiPopupViewController: UIViewController {
     
     private func bind() {
         closeButton.rx.tap
-            .bind(with: self) { owner, value in
+            .bind(with: self) { owner, _ in
                 owner.dismiss(animated: true)
             }.disposed(by: disposeBag)
+        
         
         startButton.rx.tap
             .bind(with: self) { owner, value in
@@ -126,6 +127,7 @@ final class TamagotchiPopupViewController: UIViewController {
                     guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
                           let sceneDelegate = windowScene.delegate as? SceneDelegate else { return }
                     let vc = TamagotchiTabViewController()
+                    
                     vc.viewModel.tamagotchiImage.accept(selectedNum)
                     UserDefaults.standard.set(true, forKey: "isLogin")
                     sceneDelegate.changeRootView(vc)
